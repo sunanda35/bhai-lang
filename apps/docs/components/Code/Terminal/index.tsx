@@ -10,6 +10,7 @@ const Terminal = (props: Props) => {
     }
   }, [output]);
 
+  
   return (
     <div
       ref={terminalRef}
@@ -24,10 +25,10 @@ const Terminal = (props: Props) => {
       ) : (
         <div className="text-green-700 output opacity-0">Shandaar bhai 🎉</div>
       )}
-      {output.map((line) => {
+      {output.map((line, i) => {
         return (
           <div
-            key={line.value}
+            key={i}
             className={`${line.isError ? "text-red-500" : ""} output opacity-0`}
           >
             &gt; {line.value}

@@ -1,3 +1,4 @@
+import { RuntimeException } from "../../src";
 import Interpreter from "../../src/components/interpreter";
 import InterpreterModule from "../../src/module/interpreterModule";
 
@@ -207,6 +208,46 @@ test("whileStatement test with nested loops - 6, should success", () => {
   expect(console.log).toHaveBeenCalledWith("2");
   expect(console.log).toHaveBeenCalledWith("2 baar hi chapunga");
   expect(console.log).toHaveBeenCalledWith("2 baar hi chapunga");
+});
+
+test("whileStatement test with infinite loop, should throw runtime exception after 5000 executions", () => {
+  expect(() =>
+    interpreter.interpret(`
+    hi bhai
+    
+    jab tak bhai (sahi) {
+      bol bhai "bhai";
+    }
+    bye bhai;
+    
+    `)
+  ).toThrowError(RuntimeException);
+
+  expect(console.log).toHaveBeenCalledTimes(5001);
+  expect(console.log).toHaveBeenCalledWith("bhai");
+});
+
+test("if-else ladders one after the other, should be evaluated separately", () => {
+  expect(() =>
+    interpreter.interpret(`
+    hi bhai
+    bhai ye hai x = 6;
+    agar bhai (x < 5) {
+      bol bhai "x < 5";
+    } nahi to bhai (x < 8) {
+      bol bhai "x < 8";
+    } agar bhai (x < 4) {
+      bol bhai "x < 4";
+    } warna bhai {
+      bol bhai "x > 4";
+    }
+    bye bhai;
+    
+    `)
+  ).not.toThrowError();
+
+  expect(console.log).toHaveBeenCalledWith("x < 8");
+  expect(console.log).toHaveBeenCalledWith("x > 4");
 });
 
 // test("jest", () => {
